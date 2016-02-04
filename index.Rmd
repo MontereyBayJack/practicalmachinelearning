@@ -21,7 +21,7 @@ Results can be reproduced using the R code in this document, randomForest packag
 https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv
 https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv
 
-```{r}
+```{r, message=FALSE}
 library(plyr)
 library(dplyr)
 ```
@@ -57,7 +57,7 @@ Remove features from the data sets that are not from accelerometers. Also remove
 
 Fit a Random Forest of 200 classification trees. 
 
-```{r}
+```{r,message=FALSE}
 # Random Forest
 library(randomForest)
 set.seed(1959)
@@ -80,7 +80,7 @@ plot(model.rf,col=1:6,log="y", main="Model Error Rates")
 legend("top", colnames(model.rf$err.rate),col=1:6,cex=0.8,fill=1:6)
 ```
 
-Plotted above are error rates for each class and OOB as a function of the number of trees in the model. OOB error rate stabilizes after as few as 90 trees. Class B exhibits the highest error rate, but rates are reasonably balanced  among the classes. Balancing class error rate would increase the overall OOB error rate and is not necessary. (Note that the y-axis scale is logarithmic.)
+Plotted above are error rates for each class and OOB as a function of the number of trees in the model. OOB error rate stabilizes after as few as 90 trees. Class D exhibits the highest error rate, but rates are reasonably balanced  among the classes. Balancing class error rate would increase the overall OOB error rate and is not necessary. (Note that the y-axis scale is logarithmic.)
 
 ### Cross Validation Out of Sample Error Estimate
 
@@ -101,7 +101,7 @@ The study of error estimates for bagged classifiers by Leo Breiman ("Bagging Pre
 
 Breiman claims there is no need for additional cross-validation or a separate test set to get an unbiased estimate of the test set error in a random forest, because this error is estimated during model fitting. Each tree is constructed using a different bootstrap sample from the data. For each tree, an out-of-bag classification is obtained for the left out cases. All trees not built with a case vote on the class of that case. Comparing the winners to the actual classes in the training data produces an out-of-bag error rate for each class and an overall out-of-bag error rate.
 
-```{r}
+```{r,message=FALSE}
 summary(model.rf$oob.times)
 library(lattice)
 histogram(model.rf$oob.times,main="Count of Times Cases are OOB (N = 200 trees)")
@@ -123,7 +123,7 @@ I decided to explore three ensemble methods appropriate to black-box classificat
 
 Below are notes on the three methods. Detailed results are omitted.
 
-```{r}
+```{r,message=FALSE}
 library(caret)
 library(rpart)
 library(mlbench)
